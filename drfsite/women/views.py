@@ -8,6 +8,11 @@ from .models import Women
 from .serializers import WomenSerializer
 
 
+class WomenAPIList(generics.ListCreateAPIView):
+    queryset = Women.objects.all()
+    serializer_class = WomenSerializer
+
+
 class WomenAPIView(APIView):
     def get(self, request):
         w = Women.objects.all()
@@ -39,15 +44,8 @@ class WomenAPIView(APIView):
         pk = kwargs.get("pk", None)
         if not pk:
             return Response({"error": "Method DELETE not allowed"})
-        try:
-            instance = Women.objects.get(pk=pk)
-        except:
-            return Response({"error": "Object does not exists"})
 
-        serializer = WomenSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.delete(validated_data=request.data)
-
+        # здесь код для удаления записи с переданным pk
 
         return Response({"post": "delete post " + str(pk)})
 
